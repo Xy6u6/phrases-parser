@@ -29,17 +29,6 @@ def parse_phrases(url: str) -> list:
                 list_of_quotes.append(f'{counter + 1}. {phrase.text} by: {authors[counter].text}')
             page += 1
 
-
-def check_next_page(url):
-    res = requests.get(url)
-    sp = BeautifulSoup(res.text, 'lxml')
-    try:
-        sp.find('li', class_='next').find('a').get('href')
-        return True
-    except AttributeError:
-        return False
-
-
 def write_phrases_to_txt(phrases: dict):
     pass
 
