@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 
 def get_top_ten_tags() -> list:
+    """func returns urls with top ten tags to parse"""
     url = 'https://quotes.toscrape.com'
     res = requests.get(url)
     sp = BeautifulSoup(res.text, 'lxml')
@@ -12,20 +13,21 @@ def get_top_ten_tags() -> list:
     return urls_list
 
 
-# TODO: rename func
 def parse_phrases(url: str) -> list:
     """func to parse phrases and authors from url into list"""
     list_of_quotes = []
-
-    res = requests.get(url)
-    sp = BeautifulSoup(res.text, 'lxml')
-    tag = sp.find('h3').find('a').text
-    phrases = sp.findAll('span', class_='text')
-    authors = sp.findAll('small', class_='author')
-    for counter, phrase in enumerate(phrases):
-        list_of_quotes.append(f'{counter + 1}. {phrase.text} by: {authors[counter].text} \n')
-
-    return list_of_quotes
+    page = 1
+    while True:
+        res = requests.get(url + str(page))
+        sp = BeautifulSoup(res.text, 'lxml')
+        if 'No quotes found!' in str(sp.contents):
+            return list_of_quotes
+        else:
+            phrases = sp.findAll('span', class_='text')
+            authors = sp.findAll('small', class_='author')
+            for counter, phrase in enumerate(phrases):
+                list_of_quotes.append(f'{counter + 1}. {phrase.text} by: {authors[counter].text}')
+            page += 1
 
 
 def check_next_page(url):
@@ -38,10 +40,14 @@ def check_next_page(url):
         return False
 
 
-def write_phrases_to_txt(phrases: list):
+def write_phrases_to_txt(phrases: dict):
     pass
 
 
 if __name__ == '__main__':
     urls = get_top_ten_tags()
-    print(parse_phrases(urls[0]))
+    dict_of_qoutes = {}
+    for item in urls:
+        tag = item[32:len(item) - 6]
+        dict_of_qoutes[tag] = parse_phrases(item)
+    print(dict_of_qoutes)
