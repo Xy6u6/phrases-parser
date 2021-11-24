@@ -6,28 +6,26 @@ def get_top_ten_tags() -> list:
     url = 'https://quotes.toscrape.com'
     res = requests.get(url)
     sp = BeautifulSoup(res.text, 'lxml')
-    tags = sp.findParent('Top Ten tags').find_all('a', class_='tag')
-    urls = [url + str(i.get('href')) + '/page/' for i in tags]
-    return urls
+    top_ten_tags = sp.find('h2', string="Top Ten tags").findParent()
+    hrefs = top_ten_tags.findAll('a', class_='tag')
+    urls_list = [url + str(i.get('href')) + 'page/' for i in hrefs]
+    return urls_list
 
 
 # TODO: rename func
-def get_quotes(url: str):
-    """func to get quotes from url"""
+def parse_phrases(url: str) -> list:
+    """func to parse phrases and authors from url into list"""
+    list_of_quotes = []
+
     res = requests.get(url)
     sp = BeautifulSoup(res.text, 'lxml')
     tag = sp.find('h3').find('a').text
-    quotes = sp.findAll('span', class_='text')
+    phrases = sp.findAll('span', class_='text')
     authors = sp.findAll('small', class_='author')
-    for counter, k in enumerate(quotes):
-        with open(f'list of {tag} sentences.txt', 'a') as f:
-            f.write(f'{counter + 1}. {k.text} by: {authors[counter].text} \n')
+    for counter, phrase in enumerate(phrases):
+        list_of_quotes.append(f'{counter + 1}. {phrase.text} by: {authors[counter].text} \n')
 
-    if check_next_page(url):
-        nextpage = url + '/page/2'  # TODO: FIX constant 2
-        get_quotes(nextpage)
-    else:
-        return
+    return list_of_quotes
 
 
 def check_next_page(url):
@@ -40,8 +38,10 @@ def check_next_page(url):
         return False
 
 
+def write_phrases_to_txt(phrases: list):
+    pass
+
+
 if __name__ == '__main__':
     urls = get_top_ten_tags()
-    for i in urls:
-        print(f'scrapping page {i}')
-        get_quotes(i)
+    print(parse_phrases(urls[0]))
