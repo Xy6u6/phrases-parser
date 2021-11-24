@@ -29,14 +29,19 @@ def parse_phrases(url: str) -> list:
                 list_of_quotes.append(f'{counter + 1}. {phrase.text} by: {authors[counter].text}')
             page += 1
 
-def write_phrases_to_txt(phrases: dict):
-    pass
+
+def write_phrases_to_txt(dict_of_quotes: dict):
+    """function collect phrases to files named like dict keys"""
+    for key in dict_of_quotes.keys():
+        with open(f'phrases-collection/{key} quotes of great men.txt', 'a') as f:
+            for value in dict_of_quotes[key]:
+                f.write(f'{value} \n')
 
 
 if __name__ == '__main__':
     urls = get_top_ten_tags()
-    dict_of_qoutes = {}
+    dict_of_quotes = {}
     for item in urls:
         tag = item[32:len(item) - 6]
-        dict_of_qoutes[tag] = parse_phrases(item)
-    print(dict_of_qoutes)
+        dict_of_quotes[tag] = parse_phrases(item)
+    write_phrases_to_txt(dict_of_quotes)
