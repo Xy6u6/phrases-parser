@@ -9,7 +9,7 @@ def main():
     log.info('got list of URLS')
     dict_of_quotes = {}
     for item in urls:
-        log.info(f'scrapping url {item+1}, {urls.index(item)}th of {len(urls)}')
+        log.info(f'scrapping URLS: {urls.index(item)+1}th of {len(urls)} pages, {item}')
         tag = item[32:len(item) - 6]
         dict_of_quotes[tag] = sc.parse_phrases(item)
     sc.write_phrases_to_txt(dict_of_quotes)
