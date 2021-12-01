@@ -1,5 +1,6 @@
 import logging as log
-import src.scrapper as sc
+import time
+import scrapper as sc
 
 
 def main():
@@ -17,3 +18,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+    while True:
+        print('sleeping')
+        time.sleep(2)
