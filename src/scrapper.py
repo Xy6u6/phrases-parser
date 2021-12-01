@@ -33,7 +33,7 @@ def parse_phrases(url: str) -> list:
 
 def write_phrases_to_txt(dict_of_quotes: dict):
     """function collect phrases to files named like dict keys"""
-    os.makedirs('../phrases-collection', exist_ok=True)
+    os.makedirs('../phrases-collection', exist_ok=True) #TODO refactor to TMP folder
     for key in dict_of_quotes.keys():
         log.info(f'writing {key} qoutes')
         with open(f'phrases-collection/{key} quotes of great men.txt', 'a') as f:

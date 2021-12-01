@@ -6,7 +6,8 @@ RUN mkdir -p python_apps/phrases-parser
 
 WORKDIR /python_apps/phrases-parser
 
-COPY . /python_apps/phrases-parser
+COPY . .
 RUN pip install -r requirements.txt
+
 
 CMD ["python", "main.py"]
