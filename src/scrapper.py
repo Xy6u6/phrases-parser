@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import logging as log
 
+
 def get_top_ten_tags() -> list:
     """func returns urls with top ten tags to parse"""
     url = 'https://quotes.toscrape.com'
@@ -33,19 +34,14 @@ def parse_phrases(url: str) -> list:
 
 def write_phrases_to_txt(dict_of_quotes: dict):
     """function collect phrases to files named like dict keys"""
-    os.makedirs('../phrases-collection', exist_ok=True) #TODO refactor to TMP folder
+    os.makedirs('/tmp/parser/', exist_ok=True)
     for key in dict_of_quotes.keys():
         log.info(f'writing {key} qoutes')
-        with open(f'phrases-collection/{key} quotes of great men.txt', 'a') as f:
+        with open(f'/tmp/parser/{key}_quotes_of_great_men.txt', 'a') as f:
             for value in dict_of_quotes[key]:
                 f.write(f'{value} \n')
 
 
 if __name__ == '__main__':
-    log.info()
-    urls = get_top_ten_tags()
-    dict_of_quotes = {}
-    for item in urls:
-        tag = item[32:len(item) - 6]
-        dict_of_quotes[tag] = parse_phrases(item)
+    dict_of_quotes = {'jj': 'n'}
     write_phrases_to_txt(dict_of_quotes)
