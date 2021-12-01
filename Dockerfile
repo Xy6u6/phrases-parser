@@ -3,7 +3,6 @@ FROM python:3.8
 #RUN apt install pip
 
 RUN mkdir -p app/
-#RUN mkdir -p tmp/parser
 WORKDIR /app
 
 COPY ./src .

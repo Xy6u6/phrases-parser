@@ -1,5 +1,5 @@
 import logging as log
-import src.scrapper as sc
+import scrapper as sc
 
 
 def main():
