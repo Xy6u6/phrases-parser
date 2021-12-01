@@ -1,0 +1,7 @@
+version: '2.2'
+services:
+  phases-parser:
+    build: .
+    restart: always
+
+
