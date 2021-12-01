@@ -8,7 +8,7 @@ def main():
     urls = sc.get_top_ten_tags()
     log.info('got list of URLS')
     dict_of_quotes = {}
-    for item in urls[0:1]:
+    for item in urls:
         log.info(f'scrapping URLS: {urls.index(item)+1}th of {len(urls)} pages, {item}')
         tag = item[32:len(item) - 6]
         dict_of_quotes[tag] = sc.parse_phrases(item)
