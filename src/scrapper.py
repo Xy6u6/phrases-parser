@@ -45,3 +45,4 @@ def write_phrases_to_txt(dict_of_quotes: dict):
 if __name__ == '__main__':
     dict_of_quotes = {'jj': 'n'}
     write_phrases_to_txt(dict_of_quotes)
+z
