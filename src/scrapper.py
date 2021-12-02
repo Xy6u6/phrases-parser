@@ -42,7 +42,12 @@ def write_phrases_to_txt(dict_of_quotes: dict):
                 f.write(f'{value} \n')
 
 
+def upload_to_cloud(dict_of_quotes: dict):
+    """collect phrases to files and upload it to cloud storage"""
+    pass
+
+
+
 if __name__ == '__main__':
     dict_of_quotes = {'jj': 'n'}
     write_phrases_to_txt(dict_of_quotes)
-z
