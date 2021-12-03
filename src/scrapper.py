@@ -2,6 +2,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import logging as log
+from google.cloud import storage
 
 
 def get_top_ten_tags() -> list:
@@ -42,12 +43,28 @@ def write_phrases_to_txt(dict_of_quotes: dict):
                 f.write(f'{value} \n')
 
 
-def upload_to_cloud(dict_of_quotes: dict):
-    """collect phrases to files and upload it to cloud storage"""
-    pass
+def upload_to_cloud(bucket_name, source_file_name, destination_blob_name):
+    """Uploads a file to the bucket."""
+    # The ID of your GCS bucket
+    # bucket_name = "your-bucket-name"
+    # The path to your file to upload
+    # source_file_name = "local/path/to/file"
+    # The ID of your GCS object
+    # destination_blob_name = "storage-object-name"
+    storage_client = storage.Client.from_service_account_json('tmp/gcp_acc.json')
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
 
+    blob.upload_from_filename(source_file_name)
+
+    print(
+        "File {} uploaded to {}.".format(
+            source_file_name, destination_blob_name
+        )
+    )
 
 
 if __name__ == '__main__':
-    dict_of_quotes = {'jj': 'n'}
-    write_phrases_to_txt(dict_of_quotes)
+    # dict_of_quotes = {'jj': 'n'}
+    # write_phrases_to_txt(dict_of_quotes)
+    upload_to_cloud("parser", "tmp/somefile.txt", "some_cloud_file.txt")
