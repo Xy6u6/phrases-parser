@@ -1,7 +1,6 @@
-import json
 import logging as log
 import os
-from pprint import pprint
+
 
 import scrapper as sc
 from src.gcp import upload_to_cloud
