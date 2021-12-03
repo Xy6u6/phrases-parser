@@ -2,6 +2,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import logging as log
+import json
 
 
 def get_top_ten_tags() -> list:
@@ -28,7 +29,8 @@ def parse_phrases(url: str) -> list:
             phrases = sp.findAll('span', class_='text')
             authors = sp.findAll('small', class_='author')
             for counter, phrase in enumerate(phrases):
-                list_of_quotes.append(f'{counter + 1}. {phrase.text} by: {authors[counter].text}')
+                list_of_quotes.append(
+                    {"qoute": str(phrase.text).replace("“", "").replace("”", ""), "author": authors[counter].text})
             page += 1
 
 
@@ -42,6 +44,16 @@ def write_phrases_to_txt(dict_of_quotes: dict):
                 f.write(f'{value} \n')
 
 
+def write_phrases_to_json(dict_of_quotes: dict):
+    """function collect phrases to files named like dict keys"""
+    os.makedirs('/tmp/parser/', exist_ok=True)
+    for key in dict_of_quotes.keys():
+        log.info(f'writing {key} qoutes')
+        with open(f'/tmp/parser/{key}_quotes_of_great_men.json', 'w') as f:
+            json.dump(dict_of_quotes[key], f, indent=4)
+
+
 if __name__ == '__main__':
-    dict_of_quotes = {'jj': 'n'}
-    write_phrases_to_txt(dict_of_quotes)
+    with open('tmp/tmp.json','r') as f:
+        dict_of_quotes = json.load(f)
+        write_phrases_to_json(dict_of_quotes)
