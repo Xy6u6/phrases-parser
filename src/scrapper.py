@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import logging as log
 import json
+import csv
 
 
 def get_top_ten_tags() -> list:
@@ -34,26 +35,29 @@ def parse_phrases(url: str) -> list:
             page += 1
 
 
-def write_phrases_to_txt(dict_of_quotes: dict):
+def write_phrases_to_file(dict_of_quotes: dict, fformat: str = 'json'):
     """function collect phrases to files named like dict keys"""
     os.makedirs('/tmp/parser/', exist_ok=True)
     for key in dict_of_quotes.keys():
         log.info(f'writing {key} qoutes')
-        with open(f'/tmp/parser/{key}_quotes_of_great_men.txt', 'a') as f:
-            for value in dict_of_quotes[key]:
-                f.write(f'{value} \n')
-
-
-def write_phrases_to_json(dict_of_quotes: dict):
-    """function collect phrases to files named like dict keys"""
-    os.makedirs('/tmp/parser/', exist_ok=True)
-    for key in dict_of_quotes.keys():
-        log.info(f'writing {key} qoutes')
-        with open(f'/tmp/parser/{key}_quotes_of_great_men.json', 'w') as f:
-            json.dump(dict_of_quotes[key], f, indent=4)
+        if fformat == 'json':
+            file = '/tmp/parser/{key}_quotes_of_great_men.json'
+            with open(file, 'w') as f:
+                json.dump(dict_of_quotes[key], f, indent=4)
+        elif fformat == 'txt': #TODO fix dict keys in string
+            with open(f'/tmp/parser/{key}_quotes_of_great_men.txt', 'a') as f:
+                for value in dict_of_quotes[key]:
+                    f.write(f'{value} \n')
+        elif fformat == 'csv':
+            with open(f'/tmp/parser/{key}_quotes_of_great_men.csv', 'w') as f:
+                writer = csv.writer(f)
+                writer.writerow(['tag', 'author', 'quote'])
+                for items in dict_of_quotes[key]:
+                    list_of_qoutes = items
+                    writer.writerow([key, list_of_qoutes["author"], list_of_qoutes["qoute"]])
 
 
 if __name__ == '__main__':
-    with open('tmp/tmp.json','r') as f:
+    with open('tmp/tmp.json', 'r') as f:
         dict_of_quotes = json.load(f)
-        write_phrases_to_json(dict_of_quotes)
+        write_phrases_to_file(dict_of_quotes, 'txt')
