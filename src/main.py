@@ -3,7 +3,7 @@ import os
 
 
 import scrapper as sc
-from src.gcp import upload_to_cloud
+from src.gcp import upload_to_cloud,gcs_to_bq
 
 
 def main():
@@ -18,12 +18,14 @@ def main():
         tag = item[32:len(item) - 6]
         dict_of_quotes[tag] = sc.parse_phrases(item)
     # write to files
-    sc.write_phrases_to_json(dict_of_quotes)
-    # upload to gcp
+    sc.write_phrases_to_file(dict_of_quotes, 'csv')
+    # upload to gcp and bigquery
     list_of_files = os.listdir("/tmp/parser/")
     for file in list_of_files:
-        log.info(f'uploading {file}')
-        upload_to_cloud("parser", "/tmp/parser/" + file, file)
+        log.info(f'uploading to cloud storage {file}')
+        cloud_file_path = "/tmp/parser/" + file
+        upload_to_cloud("parser", cloud_file_path, file)
+        gcs_to_bq(file)
     log.info('all done')
 
 
