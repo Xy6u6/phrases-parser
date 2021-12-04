@@ -3,7 +3,7 @@ import os
 
 
 import scrapper as sc
-from src.gcp import upload_to_cloud,gcs_to_bq
+from gcp import upload_to_cloud, gcs_to_bq
 
 
 def main():

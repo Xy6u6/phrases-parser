@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY ./src .
 COPY requirements.txt .
-
+COPY ./tmp/gcp_acc.json ./tmp/
 
 RUN pip install -r requirements.txt
 

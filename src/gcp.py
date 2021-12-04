@@ -36,7 +36,7 @@ def gcs_to_bq(file:str):
         # The source format defaults to CSV, so the line below is optional.
         source_format=bigquery.SourceFormat.CSV,
     )
-    uri = "gs://parser/json/" + file
+    uri = "gs://parser/" + file
     load_job = client.load_table_from_uri(
         uri, table_id, job_config=job_config
     )  # Make an API request.
