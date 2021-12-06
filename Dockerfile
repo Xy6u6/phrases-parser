@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY ./src .
 COPY requirements.txt .
-COPY ./tmp/gcp_acc.json ./tmp/
+COPY ./red-parity-333415-f0c7b39b3433.json ./tmp/gcp-acc.json
 
 RUN pip install -r requirements.txt
 

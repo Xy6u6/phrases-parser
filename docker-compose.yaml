@@ -1,6 +1,6 @@
 version: '2.2'
 services:
-  phases-parser:
+  phrases-parser:
     build: .
     volumes:
       - /tmp/parser/:/tmp/parser/
