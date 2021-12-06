@@ -40,24 +40,22 @@ def write_phrases_to_file(dict_of_quotes: dict, fformat: str = 'json'):
     os.makedirs('/tmp/parser/', exist_ok=True)
     for key in dict_of_quotes.keys():
         log.info(f'writing {key} qoutes')
-        if fformat == 'json':
-            file = '/tmp/parser/{key}_quotes_of_great_men.json'
-            with open(file, 'w') as f:
+        file = f'/tmp/parser/{key}_quotes_of_great_men.{fformat}'
+        with open(file, 'w') as f:
+            if fformat == 'json':
                 json.dump(dict_of_quotes[key], f, indent=4)
-        elif fformat == 'txt': #TODO fix dict keys in string
-            with open(f'/tmp/parser/{key}_quotes_of_great_men.txt', 'a') as f:
-                for value in dict_of_quotes[key]:
-                    f.write(f'{value} \n')
-        elif fformat == 'csv':
-            with open(f'/tmp/parser/{key}_quotes_of_great_men.csv', 'w') as f:
-                writer = csv.writer(f)
-                writer.writerow(['tag', 'author', 'quote'])
-                for items in dict_of_quotes[key]:
-                    list_of_qoutes = items
-                    writer.writerow([key, list_of_qoutes["author"], list_of_qoutes["qoute"]])
+            elif fformat == 'txt': #TODO fix dict keys in string
+                    for value in dict_of_quotes[key]:
+                        f.write(f'{value} \n')
+            elif fformat == 'csv':
+                    writer = csv.writer(f)
+                    writer.writerow(['tag', 'author', 'quote'])
+                    for items in dict_of_quotes[key]:
+                        list_of_qoutes = items
+                        writer.writerow([key, list_of_qoutes["author"], list_of_qoutes["qoute"]])
 
 
 if __name__ == '__main__':
     with open('tmp/tmp.json', 'r') as f:
         dict_of_quotes = json.load(f)
-        write_phrases_to_file(dict_of_quotes, 'txt')
+        write_phrases_to_file(dict_of_quotes, 'json')

@@ -23,8 +23,8 @@ def main():
     list_of_files = os.listdir("/tmp/parser/")
     for file in list_of_files:
         log.info(f'uploading to cloud storage {file}')
-        cloud_file_path = "/tmp/parser/" + file
-        upload_to_cloud("parser", cloud_file_path, file)
+        local_file_path = "/tmp/parser/" + file
+        upload_to_cloud("parser", local_file_path, file)
         gcs_to_bq(file)
     log.info('all done')
 

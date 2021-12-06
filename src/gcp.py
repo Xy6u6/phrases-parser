@@ -1,10 +1,10 @@
 import logging
 
 from google.cloud import storage
-import os
 from google.cloud import bigquery
 
-
+service_acc_key_path = 'tmp/gcp_acc.json'
+gcs_bucket_path = "gs://parser/"
 def upload_to_cloud(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
@@ -13,7 +13,7 @@ def upload_to_cloud(bucket_name, source_file_name, destination_blob_name):
     # source_file_name = "local/path/to/file"
     # The ID of your GCS object
     # destination_blob_name = "storage-object-name"
-    storage_client = storage.Client.from_service_account_json('tmp/gcp_acc.json')
+    storage_client = storage.Client.from_service_account_json(service_acc_key_path)
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_blob_name)
     blob.upload_from_filename(source_file_name)
@@ -23,7 +23,7 @@ def upload_to_cloud(bucket_name, source_file_name, destination_blob_name):
 def gcs_to_bq(file:str):
     """from cloud storage to bigquery"""
     # Construct a BigQuery client object.
-    client = bigquery.Client.from_service_account_json('tmp/gcp_acc.json')
+    client = bigquery.Client.from_service_account_json(service_acc_key_path)
     table_id = "testing.parser"
 
     job_config = bigquery.LoadJobConfig(
@@ -36,7 +36,7 @@ def gcs_to_bq(file:str):
         # The source format defaults to CSV, so the line below is optional.
         source_format=bigquery.SourceFormat.CSV,
     )
-    uri = "gs://parser/" + file
+    uri = gcs_bucket_path + file
     load_job = client.load_table_from_uri(
         uri, table_id, job_config=job_config
     )  # Make an API request.
