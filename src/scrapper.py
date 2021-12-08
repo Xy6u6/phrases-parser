@@ -56,6 +56,7 @@ def write_phrases_to_file(dict_of_quotes: dict, fformat: str = 'json'):
 
 
 if __name__ == '__main__':
-    with open('tmp/tmp.json', 'r') as f:
-        dict_of_quotes = json.load(f)
-        write_phrases_to_file(dict_of_quotes, 'json')
+    pass
+    # with open('tmp/tmp.json', 'r') as f:
+    #     dict_of_quotes = json.load(f)
+    #     write_phrases_to_file(dict_of_quotes, 'json')
