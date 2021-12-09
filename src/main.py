@@ -1,6 +1,6 @@
 import logging as log
 import os
-
+from constants import FILES_PATH
 
 import scrapper as sc
 from gcp import upload_to_cloud, gcs_to_bq
@@ -20,10 +20,10 @@ def main():
     # write to files
     sc.write_phrases_to_file(dict_of_quotes, 'csv')
     # upload to gcp and bigquery
-    list_of_files = os.listdir("/tmp/parser/")
+    list_of_files = os.listdir()
     for file in list_of_files:
         log.info(f'uploading to cloud storage {file}')
-        local_file_path = "/tmp/parser/" + file
+        local_file_path = FILES_PATH + file
         upload_to_cloud("parser", local_file_path, file)
         gcs_to_bq(file)
     log.info('all done')

@@ -5,6 +5,8 @@ import logging as log
 import json
 import csv
 
+from src.constants import FILES_PATH
+
 
 def get_top_ten_tags() -> list:
     """func returns urls with top ten tags to parse"""
@@ -37,10 +39,10 @@ def parse_phrases(url: str) -> list:
 
 def write_phrases_to_file(dict_of_quotes: dict, fformat: str = 'json'):
     """function collect phrases to files named like dict keys"""
-    os.makedirs('/tmp/parser/', exist_ok=True)
+    os.makedirs(FILES_PATH, exist_ok=True)
     for key in dict_of_quotes.keys():
         log.info(f'writing {key} qoutes')
-        file = f'/tmp/parser/{key}_quotes_of_great_men.{fformat}'
+        file = f'{FILES_PATH}{key}_quotes_of_great_men.{fformat}'
         with open(file, 'w') as f:
             if fformat == 'json':
                 json.dump(dict_of_quotes[key], f, indent=4)
